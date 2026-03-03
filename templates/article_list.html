@@ -16,6 +16,12 @@
             </div>
             <div class="card-footer text-left text-muted">
                 <span class="text-muted">author {{ article.author | title }} · {{ article.date }}</span>
+                {% if article.tags.all %}
+                <br>
+                {% for tag in article.tags.all %}
+                    <span class="badge bg-secondary mt-1">{{ tag.name }}</span>
+                {% endfor %}
+                {% endif %}
             </div>
         </div>
         <br>
