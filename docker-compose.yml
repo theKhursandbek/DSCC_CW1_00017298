@@ -45,6 +45,13 @@ services:
     depends_on:
       - web
 
+  certbot:
+    image: certbot/certbot:latest
+    restart: "no"
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+
 volumes:
   postgres_data:
   static_files:

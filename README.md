@@ -131,10 +131,19 @@ A full-stack Django blog application with complete DevOps pipeline including Doc
 
 4. **Install SSL certificate:**
    ```bash
-   sudo apt install certbot
-   sudo certbot certonly --webroot -w /var/www/certbot \
-       -d yourdomain.uz -d www.yourdomain.uz \
-       --email your@email.com --agree-tos
+   # 1) Make sure DNS is ready first:
+   #    user-blog.uz      A -> <your-server-ip>
+   #    www.user-blog.uz  A -> <your-server-ip>
+   #    (wait until: dig +short user-blog.uz A returns your IP)
+
+   # 2) Issue the Let's Encrypt certificate using the certbot service
+   docker compose run --rm certbot certonly \
+     --webroot -w /var/www/certbot \
+     -d user-blog.uz -d www.user-blog.uz \
+     --email your@email.com --agree-tos --no-eff-email
+
+   # 3) Enable HTTPS in Nginx and restart
+   cp nginx/nginx.https.conf nginx/nginx.conf
    docker compose restart nginx
    ```
 
