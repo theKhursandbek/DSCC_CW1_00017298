@@ -3,7 +3,14 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from ckeditor.fields import RichTextField
 
-# Create your models here.
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Article(models.Model):
     title = models.CharField(max_length=150)
     summary = models.CharField(max_length=200, blank=True, null=True)
@@ -14,6 +21,7 @@ class Article(models.Model):
         get_user_model(),
         on_delete=models.CASCADE,
     )
+    tags = models.ManyToManyField(Tag, blank=True, related_name="articles")
 
     def __str__(self):
         return self.title
