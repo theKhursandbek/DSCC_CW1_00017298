@@ -23,6 +23,14 @@
                 Author: {{ object.author }} | {{ object.date }}
             </h6>
 
+            {% if object.tags.all %}
+            <div class="mb-3">
+                {% for tag in object.tags.all %}
+                    <span class="badge bg-secondary">{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <div class="card-text">
                 {{ object.body|safe }}
             </div>

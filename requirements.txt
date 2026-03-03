@@ -1,0 +1,11 @@
+Django>=5.0,<7.0
+django-crispy-forms>=2.0
+crispy-bootstrap5>=0.7
+Pillow>=10.0
+django-ckeditor>=6.7
+environs[django]>=11.0
+psycopg2-binary>=2.9
+whitenoise>=6.5
+gunicorn>=21.2
+pytest-django>=4.5
+flake8>=7.0
