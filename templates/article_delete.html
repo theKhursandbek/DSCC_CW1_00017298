@@ -4,7 +4,8 @@
     <h1>Delete post</h1>
     <form method="post">
         {% csrf_token %}
-        <p>Do you want to delete the post titled {{ article.title }}?</p>
-        <button type="submit" class="btn btn-danger ml-2">Delete</button>
+        <p>Do you want to delete the post titled <strong>{{ article.title }}</strong>?</p>
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'article_list' %}" class="btn btn-outline-secondary ms-2">Cancel</a>
     </form>
 {% endblock content %}

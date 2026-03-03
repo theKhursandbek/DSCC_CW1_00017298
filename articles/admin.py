@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, Comment, Tag
+from .models import Article, Comment
 
 
 class CommentInline(admin.TabularInline):
@@ -9,11 +9,10 @@ class CommentInline(admin.TabularInline):
 
 class ArticleAdmin(admin.ModelAdmin):
     inlines = [CommentInline]
-    filter_horizontal = ('tags',)
-    list_display = ('title', 'author', 'date')
-    list_filter = ('date', 'tags')
+    filter_horizontal = ('likes',)
+    list_display = ('title', 'author', 'date', 'total_likes')
+    list_filter = ('date',)
 
 
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Comment)
-admin.site.register(Tag)

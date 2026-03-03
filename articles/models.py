@@ -4,16 +4,9 @@ from django.contrib.auth import get_user_model
 from ckeditor.fields import RichTextField
 
 
-class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Article(models.Model):
     title = models.CharField(max_length=150)
-    summary = models.CharField(max_length=200, blank=True, null=True)
+    summary = models.CharField(max_length=200, blank=True, default="")
     body = RichTextField()
     photo = models.ImageField(upload_to="images/", blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -21,13 +14,20 @@ class Article(models.Model):
         get_user_model(),
         on_delete=models.CASCADE,
     )
-    tags = models.ManyToManyField(Tag, blank=True, related_name="articles")
+    likes = models.ManyToManyField(
+        get_user_model(),
+        blank=True,
+        related_name="liked_articles",
+    )
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse('article_detail', args=[str(self.pk)])
+
+    def total_likes(self):
+        return self.likes.count()
 
 
 class Comment(models.Model):

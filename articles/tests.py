@@ -2,21 +2,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
-from .models import Article, Comment, Tag
-
-
-class TagModelTest(TestCase):
-    """Test the Tag model."""
-
-    def test_tag_creation(self):
-        tag = Tag.objects.create(name="python")
-        self.assertEqual(str(tag), "python")
-        self.assertEqual(tag.name, "python")
-
-    def test_tag_unique_name(self):
-        Tag.objects.create(name="django")
-        with self.assertRaises(Exception):
-            Tag.objects.create(name="django")
+from .models import Article, Comment
 
 
 class ArticleModelTest(TestCase):
@@ -28,15 +14,16 @@ class ArticleModelTest(TestCase):
             username="testuser",
             password="testpass123",
         )
-        cls.tag1 = Tag.objects.create(name="python")
-        cls.tag2 = Tag.objects.create(name="django")
+        cls.user2 = get_user_model().objects.create_user(
+            username="liker",
+            password="testpass123",
+        )
         cls.article = Article.objects.create(
             title="Test Article",
             summary="A short summary",
             body="<p>Full body content here.</p>",
             author=cls.user,
         )
-        cls.article.tags.add(cls.tag1, cls.tag2)
 
     def test_article_creation(self):
         self.assertEqual(self.article.title, "Test Article")
@@ -51,21 +38,32 @@ class ArticleModelTest(TestCase):
             f"/articles/{self.article.pk}/",
         )
 
-    def test_article_many_to_many_tags(self):
-        """Verify M2M: an article can have multiple tags."""
-        self.assertEqual(self.article.tags.count(), 2)
-        self.assertIn(self.tag1, self.article.tags.all())
-        self.assertIn(self.tag2, self.article.tags.all())
+    def test_article_like_m2m(self):
+        """Verify M2M: multiple users can like an article."""
+        self.article.likes.add(self.user, self.user2)
+        self.assertEqual(self.article.total_likes(), 2)
+        self.assertIn(self.user, self.article.likes.all())
+        self.assertIn(self.user2, self.article.likes.all())
 
-    def test_tag_reverse_relation(self):
-        """Verify reverse M2M: a tag can belong to multiple articles."""
+    def test_article_unlike(self):
+        """Verify a user can unlike an article."""
+        self.article.likes.add(self.user)
+        self.assertEqual(self.article.total_likes(), 1)
+        self.article.likes.remove(self.user)
+        self.assertEqual(self.article.total_likes(), 0)
+
+    def test_user_liked_articles_reverse(self):
+        """Verify reverse M2M: a user can like multiple articles."""
         article2 = Article.objects.create(
             title="Second Article",
             body="<p>Body</p>",
             author=self.user,
         )
-        article2.tags.add(self.tag1)
-        self.assertEqual(Article.objects.filter(tags=self.tag1).count(), 2)
+        self.article.likes.add(self.user2)
+        article2.likes.add(self.user2)
+        self.assertEqual(
+            Article.objects.filter(likes=self.user2).count(), 2
+        )
 
 
 class CommentModelTest(TestCase):
@@ -165,3 +163,40 @@ class ArticleCreateViewTest(TestCase):
         response = self.client.get(reverse("article_new"))
         self.assertEqual(response.status_code, 302)
         self.assertIn("/accounts/login/", response["Location"])
+
+
+class ArticleLikeViewTest(TestCase):
+    """Test the like/unlike toggle view (M2M)."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = get_user_model().objects.create_user(
+            username="likeuser",
+            password="testpass123",
+        )
+        cls.article = Article.objects.create(
+            title="Likeable Article",
+            body="<p>Like me!</p>",
+            author=cls.user,
+        )
+
+    def test_like_requires_login(self):
+        response = self.client.get(
+            reverse("article_like", args=[self.article.pk])
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/accounts/login/", response["Location"])
+
+    def test_like_toggle(self):
+        self.client.login(username="likeuser", password="testpass123")
+        # Like
+        response = self.client.get(
+            reverse("article_like", args=[self.article.pk])
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.article.total_likes(), 1)
+        # Unlike
+        self.client.get(
+            reverse("article_like", args=[self.article.pk])
+        )
+        self.assertEqual(self.article.total_likes(), 0)
