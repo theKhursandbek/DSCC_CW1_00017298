@@ -9,8 +9,8 @@ A full-stack Django blog application with complete DevOps pipeline including Doc
 - **Rich Text Editor:** CKEditor integration for article body content
 - **Image Uploads:** Photo uploads for articles
 - **Comments System:** Users can comment on articles (many-to-one)
-- **Tagging System:** Articles can be tagged with multiple tags (many-to-many)
-- **Admin Panel:** Full Django admin with custom user admin, inline comments, and tag management
+- **Likes System:** Users can like/unlike articles (many-to-many)
+- **Admin Panel:** Full Django admin with custom user admin, inline comments, and likes management
 - **Responsive Design:** Bootstrap 5 based responsive UI
 
 ## Technologies Used
@@ -36,9 +36,8 @@ A full-stack Django blog application with complete DevOps pipeline including Doc
 | Model | Type | Relationships |
 |---|---|---|
 | **CustomUser** | Auth model | Extends AbstractUser (has `age` field) |
-| **Article** | Content model | ForeignKey → User (many-to-one), ManyToMany → Tag |
+| **Article** | Content model | ForeignKey → User (many-to-one), ManyToMany → User as likes |
 | **Comment** | Content model | ForeignKey → Article (many-to-one), ForeignKey → User |
-| **Tag** | Taxonomy model | ManyToMany ← Article (many-to-many) |
 
 ## Project Structure
 
@@ -184,7 +183,32 @@ python -m pytest --tb=short -q
 
 ## Screenshots
 
-*(Screenshots of the running application will be added here)*
+### Home Page
+![Home Page](docs/screenshots/home.png)
+
+### Article List
+![Article List](docs/screenshots/article_list.png)
+
+### Article Detail
+![Article Detail](docs/screenshots/article_detail.png)
+
+### Create New Article
+![New Article](docs/screenshots/article_new.png)
+
+### Edit Article
+![Edit Article](docs/screenshots/article_edit.png)
+
+### Delete Article
+![Delete Article](docs/screenshots/article_delete.png)
+
+### Change Password
+![Change Password](docs/screenshots/password_change.png)
+
+### Admin Panel
+![Admin Panel](docs/screenshots/admin.png)
+
+### Admin — Comment Management
+![Admin Comment](docs/screenshots/admin_comment.png)
 
 ## Author
 
