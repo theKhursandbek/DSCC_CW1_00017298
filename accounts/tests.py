@@ -1,6 +1,6 @@
 from django.test import TestCase
-from django.contrib.auth import get_user_model
 from django.urls import reverse
+from accounts.models import CustomUser
 
 
 class SignUpPageTest(TestCase):
@@ -23,9 +23,10 @@ class CustomUserModelTest(TestCase):
     """Test the CustomUser model."""
 
     def test_create_user_with_age(self):
-        user = get_user_model().objects.create_user(
+        user: CustomUser = CustomUser.objects.create_user(  # type: ignore[assignment]
             username="ageuser",
-            password="testpass123",
+            email="ageuser@test.com",
+            password="testpass123",  # noqa: S106
             age=25,
         )
         self.assertEqual(user.username, "ageuser")
@@ -33,9 +34,10 @@ class CustomUserModelTest(TestCase):
         self.assertFalse(user.is_superuser)
 
     def test_create_superuser(self):
-        admin_user = get_user_model().objects.create_superuser(
+        admin_user: CustomUser = CustomUser.objects.create_superuser(  # type: ignore[assignment]
             username="superadmin",
-            password="testpass123",
+            email="superadmin@test.com",
+            password="testpass123",  # noqa: S106
         )
         self.assertTrue(admin_user.is_superuser)
         self.assertTrue(admin_user.is_staff)

@@ -40,7 +40,7 @@ class ArticleModelTest(TestCase):
 
     def test_article_creation(self):
         self.assertEqual(self.article.title, "Test Article")
-        self.assertEqual(self.article.author.username, "testuser")
+        self.assertEqual(self.article.author.get_username(), "testuser")
 
     def test_article_str(self):
         self.assertEqual(str(self.article), "Test Article")
@@ -65,7 +65,7 @@ class ArticleModelTest(TestCase):
             author=self.user,
         )
         article2.tags.add(self.tag1)
-        self.assertEqual(self.tag1.articles.count(), 2)
+        self.assertEqual(Article.objects.filter(tags=self.tag1).count(), 2)
 
 
 class CommentModelTest(TestCase):
@@ -99,7 +99,7 @@ class CommentModelTest(TestCase):
             comment="Another comment",
             author=self.user,
         )
-        self.assertEqual(self.article.comments.count(), 2)
+        self.assertEqual(Comment.objects.filter(article=self.article).count(), 2)
 
 
 class ArticleListViewTest(TestCase):
@@ -164,4 +164,4 @@ class ArticleCreateViewTest(TestCase):
     def test_create_article_redirects_anonymous(self):
         response = self.client.get(reverse("article_new"))
         self.assertEqual(response.status_code, 302)
-        self.assertIn("/accounts/login/", response.url)
+        self.assertIn("/accounts/login/", response["Location"])
