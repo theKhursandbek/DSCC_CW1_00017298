@@ -35,8 +35,10 @@
                               {{ user.username | title }}
                           </a>
                           <ul class="dropdown-menu mt-2">
-                            <li><a class="dropdown-item" role="button" href="{% url 'article_new' %}">New Post</a></li></li>
+                            {% if user.is_superuser %}
+                            <li><a class="dropdown-item" role="button" href="{% url 'article_new' %}">New Post</a></li>
                             <div class="dropdown-divider"></div>
+                            {% endif %}
                             <li><a class="dropdown-item" role="button" href="{% url 'password_change' %}">Change password</a></li>
                             <div class="dropdown-divider"></div>
                             <li>
