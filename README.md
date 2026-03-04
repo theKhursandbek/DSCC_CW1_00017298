@@ -1,6 +1,8 @@
 # DSCC CW1 — Django Blog Application (ID: 00017298)
 
-A full-stack Django blog application with complete DevOps pipeline including Docker containerization, Nginx reverse proxy, PostgreSQL database, CI/CD with GitHub Actions, and HTTPS deployment. 
+A full-stack Django blog application with complete DevOps pipeline including Docker containerization, Nginx reverse proxy, PostgreSQL database, CI/CD with GitHub Actions, and HTTPS deployment.
+
+🔗 **Live site:** [https://khursandblog.duckdns.org](https://khursandblog.duckdns.org)
 
 ## Features
 
@@ -69,8 +71,8 @@ A full-stack Django blog application with complete DevOps pipeline including Doc
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/theKhursandbek/-DSCC_CW1_00017298.git
-   cd -DSCC_CW1_00017298
+   git clone https://github.com/theKhursandbek/DSCC_CW1_00017298.git
+   cd DSCC_CW1_00017298
    ```
 
 2. **Create environment file:**
@@ -101,21 +103,21 @@ A full-stack Django blog application with complete DevOps pipeline including Doc
 ## Production Deployment
 
 ### Server Requirements
-- Ubuntu 22.04+ server
+- Linux server (e.g., Azure VM with Debian 12)
 - Docker & Docker Compose installed
-- Domain pointed to server IP
+- Domain/subdomain pointed to server IP
 - Ports 22, 80, 443 open in firewall
 
 ### Deployment Steps
 
 1. **SSH into the server:**
    ```bash
-   ssh user@your-server-ip
+   ssh azureuser@51.120.82.78
    ```
 
 2. **Clone and configure:**
    ```bash
-   git clone https://github.com/theKhursandbek/-DSCC_CW1_00017298.git ~/dscc-cw1-00017298
+   git clone https://github.com/theKhursandbek/DSCC_CW1_00017298.git ~/dscc-cw1-00017298
    cd ~/dscc-cw1-00017298
    cp .env.example .env
    nano .env  # Fill in production values
@@ -133,14 +135,12 @@ A full-stack Django blog application with complete DevOps pipeline including Doc
 4. **Install SSL certificate:**
    ```bash
    # 1) Make sure DNS is ready first:
-   #    user-blog.uz      A -> <your-server-ip>
-   #    www.user-blog.uz  A -> <your-server-ip>
-   #    (wait until: dig +short user-blog.uz A returns your IP)
+   #    dig +short khursandblog.duckdns.org A  →  should return your server IP
 
    # 2) Issue the Let's Encrypt certificate using the certbot service
    docker compose run --rm certbot certonly \
      --webroot -w /var/www/certbot \
-     -d user-blog.uz -d www.user-blog.uz \
+     -d khursandblog.duckdns.org \
      --email your@email.com --agree-tos --no-eff-email
 
    # 3) Enable HTTPS in Nginx and restart
@@ -154,8 +154,8 @@ A full-stack Django blog application with complete DevOps pipeline including Doc
 |---|---|---|
 | `SECRET_KEY` | Django secret key | `your-random-50-char-string` |
 | `DEBUG` | Debug mode (False in production) | `False` |
-| `ALLOWED_HOSTS` | Comma-separated allowed hosts | `yourdomain.uz,www.yourdomain.uz` |
-| `CSRF_TRUSTED_ORIGINS` | Trusted origins for CSRF | `https://yourdomain.uz` |
+| `ALLOWED_HOSTS` | Comma-separated allowed hosts | `khursandblog.duckdns.org` |
+| `CSRF_TRUSTED_ORIGINS` | Trusted origins for CSRF | `https://khursandblog.duckdns.org` |
 | `DATABASE_URL` | PostgreSQL connection string | `postgres://user:pass@db:5432/dbname` |
 | `POSTGRES_DB` | PostgreSQL database name | `newsdb` |
 | `POSTGRES_USER` | PostgreSQL username | `newsuser` |
