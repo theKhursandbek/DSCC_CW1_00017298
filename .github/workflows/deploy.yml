@@ -102,6 +102,9 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
+            # Use HTTPS nginx config (cert already on server)
+            cp nginx/nginx.https.conf nginx/nginx.conf
+
             # Pull latest images
             docker compose pull
 
