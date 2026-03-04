@@ -1,6 +1,6 @@
 # DSCC CW1 — Django Blog Application (ID: 00017298)
 
-A full-stack Django blog application with complete DevOps pipeline including Docker containerization, Nginx reverse proxy, PostgreSQL database, CI/CD with GitHub Actions, and HTTPS deployment.
+A full-stack Django blog application with complete DevOps pipeline including Docker containerization, Nginx reverse proxy, PostgreSQL database, CI/CD with GitHub Actions, and HTTPS deployment. 
 
 ## Features
 
