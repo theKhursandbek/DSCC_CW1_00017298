@@ -123,7 +123,8 @@ A full-stack Django blog application with complete DevOps pipeline including Doc
 
 3. **Start services:**
    ```bash
-   docker compose up -d --build
+   docker compose pull
+   docker compose up -d
    docker compose exec web python manage.py migrate
    docker compose exec web python manage.py collectstatic --noinput
    docker compose exec -it web python manage.py createsuperuser

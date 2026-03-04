@@ -17,7 +17,7 @@ services:
       retries: 5
 
   web:
-    build: .
+    image: thekhursandbek/dscc-cw1-00017298:latest
     restart: always
     volumes:
       - static_files:/app/staticfiles
