@@ -98,6 +98,10 @@ jobs:
           script: |
             cd ~/dscc-cw1-00017298
 
+            # Update compose/config files on the server
+            git fetch origin main
+            git reset --hard origin/main
+
             # Pull latest images
             docker compose pull
 
