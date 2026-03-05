@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.urls import reverse
 from accounts.models import CustomUser
 
+TEST_PASSWORD = "testpass123"  # NOSONAR — test-only credential
+
 
 class SignUpPageTest(TestCase):
     """Test the signup page."""
@@ -26,7 +28,7 @@ class CustomUserModelTest(TestCase):
         user: CustomUser = CustomUser.objects.create_user(  # type: ignore[assignment]
             username="ageuser",
             email="ageuser@test.com",
-            password="testpass123",  # noqa: S106
+            password=TEST_PASSWORD,
             age=25,
         )
         self.assertEqual(user.username, "ageuser")
@@ -37,7 +39,7 @@ class CustomUserModelTest(TestCase):
         admin_user: CustomUser = CustomUser.objects.create_superuser(  # type: ignore[assignment]
             username="superadmin",
             email="superadmin@test.com",
-            password="testpass123",  # noqa: S106
+            password=TEST_PASSWORD,
         )
         self.assertTrue(admin_user.is_superuser)
         self.assertTrue(admin_user.is_staff)

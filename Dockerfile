@@ -32,14 +32,12 @@ COPY --from=builder /install /usr/local
 # Copy application code
 COPY . .
 
-# Collect static files at build time
+# Collect static files and set ownership
 RUN SECRET_KEY=build-placeholder \
     DATABASE_URL=sqlite:///placeholder.db \
     DEBUG=True \
-    python manage.py collectstatic --noinput 2>/dev/null || true
-
-# Create necessary directories and set ownership
-RUN mkdir -p /app/media /app/staticfiles && \
+    python manage.py collectstatic --noinput 2>/dev/null || true && \
+    mkdir -p /app/media /app/staticfiles && \
     chown -R appuser:appuser /app
 
 # Switch to non-root user

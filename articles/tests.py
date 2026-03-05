@@ -4,6 +4,8 @@ from django.urls import reverse
 
 from .models import Article, Comment
 
+TEST_PASSWORD = "testpass123"  # NOSONAR — test-only credential
+
 
 class ArticleModelTest(TestCase):
     """Test the Article model and its relationships."""
@@ -12,11 +14,11 @@ class ArticleModelTest(TestCase):
     def setUpTestData(cls):
         cls.user = get_user_model().objects.create_user(
             username="testuser",
-            password="testpass123",
+            password=TEST_PASSWORD,
         )
         cls.user2 = get_user_model().objects.create_user(
             username="liker",
-            password="testpass123",
+            password=TEST_PASSWORD,
         )
         cls.article = Article.objects.create(
             title="Test Article",
@@ -73,7 +75,7 @@ class CommentModelTest(TestCase):
     def setUpTestData(cls):
         cls.user = get_user_model().objects.create_user(
             username="commenter",
-            password="testpass123",
+            password=TEST_PASSWORD,
         )
         cls.article = Article.objects.create(
             title="Commented Article",
@@ -107,7 +109,7 @@ class ArticleListViewTest(TestCase):
     def setUpTestData(cls):
         cls.user = get_user_model().objects.create_user(
             username="viewuser",
-            password="testpass123",
+            password=TEST_PASSWORD,
         )
         Article.objects.create(
             title="View Test Article",
@@ -135,7 +137,7 @@ class ArticleDetailViewTest(TestCase):
     def setUpTestData(cls):
         cls.user = get_user_model().objects.create_user(
             username="detailuser",
-            password="testpass123",
+            password=TEST_PASSWORD,
         )
         cls.article = Article.objects.create(
             title="Detail Test",
@@ -172,7 +174,7 @@ class ArticleLikeViewTest(TestCase):
     def setUpTestData(cls):
         cls.user = get_user_model().objects.create_user(
             username="likeuser",
-            password="testpass123",
+            password=TEST_PASSWORD,
         )
         cls.article = Article.objects.create(
             title="Likeable Article",
@@ -188,7 +190,7 @@ class ArticleLikeViewTest(TestCase):
         self.assertIn("/accounts/login/", response["Location"])
 
     def test_like_toggle(self):
-        self.client.login(username="likeuser", password="testpass123")
+        self.client.login(username="likeuser", password=TEST_PASSWORD)
         # Like
         response = self.client.get(
             reverse("article_like", args=[self.article.pk])

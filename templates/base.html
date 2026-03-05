@@ -3,7 +3,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <script>window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';</script>
+        <script>globalThis.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';</script>
         <title>{% block title %}theKhursanDev{% endblock title %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <!--  Bootstrap CSS  -->
@@ -24,15 +24,15 @@
               {% if user.is_authenticated %}
                   <ul class="navbar-nav mb-2 mb-lg-0">
                       <li class="nav-item dropdown-center me-5">
-                          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                               {{ user.username | title }}
-                          </a>
+                          </button>
                           <ul class="dropdown-menu mt-2">
                             {% if user.is_superuser %}
-                            <li><a class="dropdown-item" role="button" href="{% url 'article_new' %}">New Post</a></li>
+                            <li><a class="dropdown-item" href="{% url 'article_new' %}">New Post</a></li>
                             <div class="dropdown-divider"></div>
                             {% endif %}
-                            <li><a class="dropdown-item" role="button" href="{% url 'password_change' %}">Change password</a></li>
+                            <li><a class="dropdown-item" href="{% url 'password_change' %}">Change password</a></li>
                             <div class="dropdown-divider"></div>
                             <li>
                                 <form action="{% url 'logout' %}" method="post">
@@ -46,8 +46,8 @@
                       </li>
                   </ul>
               {% else %}
-                <a class="btn btn-outline-light me-2" role="button" href="{% url 'login' %}">Log In</a>
-                <a class="btn btn-outline-warning" role="button" href="{% url 'signup' %}">Sign Up</a>
+                <a class="btn btn-outline-light me-2" href="{% url 'login' %}">Log In</a>
+                <a class="btn btn-outline-warning" href="{% url 'signup' %}">Sign Up</a>
               {% endif %}
             </div>
           </div>
