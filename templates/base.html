@@ -1,16 +1,9 @@
 {% load static %}
-
-{% block extrahead %}
-    <script>window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';</script>
-    {{ block.super }}
-{% endblock %}
-
-
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <script>window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';</script>
         <title>{% block title %}theKhursanDev{% endblock title %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <!--  Bootstrap CSS  -->
